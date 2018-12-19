@@ -11,6 +11,8 @@ public class CameraController : MonoBehaviour {
     CharacterMotor motor;
     public LayerMask cameraMask;
     private float nextPitch, nextYaw;
+    [SerializeField]
+    private Vector3 CenteringOffset;
 	void Start () {
         InputController.instance.onAxisInput += CameraCalc;
         motor = FindObjectOfType<CharacterMotor>();
@@ -24,16 +26,14 @@ public class CameraController : MonoBehaviour {
         float currentAngle = Mathf.Atan2(currentOffset.z, currentOffset.x);//get the current angle wich should be between 0 and PI
         currentAngle += nextYaw;//Add change in angle we want in radians
         float x = Mathf.Cos(currentAngle), y = Mathf.Sin(currentAngle);//Map the radian angle to a unit circle point
-        //float cos = Mathf.Cos(currentAngle+ nextYaw);
-        //float sin = Mathf.Sin(currentAngle + nextYaw);
         currentOffset = new Vector3(x, pitch, y) * zoom;//Apply pitch and zoom
         RaycastHit hit;
         if(Physics.Raycast(motor.transform.position, currentOffset.normalized, out hit, currentOffset.magnitude, cameraMask))
         {
             currentOffset = (currentOffset.normalized *hit.distance);
         }
-        transform.position = motor.transform.position + currentOffset;
-        transform.LookAt(motor.transform);
+        transform.position = motor.transform.position + CenteringOffset + currentOffset;
+        transform.LookAt(motor.transform.position + CenteringOffset);
         nextYaw = 0;
     }
 

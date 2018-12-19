@@ -7,7 +7,8 @@ public enum BindType { Key, Mouse }
 public enum Axis { None, DPadY, DPadX, RightStickY, RightStickX, LeftStickY, LeftStickX, Triggers, RightTrigger, LeftTrigger, MouseX, MouseY }//All these that are on controller need to be in the unity input 
 public class Bind : ScriptableObject
 {
-
+    //Todo: make delegate function in each bind
+    //Todo: make listening happen here instead
     [SerializeField]
     protected string bindName = "";
 

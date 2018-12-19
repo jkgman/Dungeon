@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CreateAssetMenu(fileName = "New KeyBind", menuName = "Input/AxisBind")]
+[CreateAssetMenu(fileName = "New AxisBind", menuName = "Input/AxisBind")]
 public class AxisBind : Bind
 {
 
@@ -89,12 +89,13 @@ public class AxisBind : Bind
         PlayerPrefs.SetString(BindName + "Axis", newKey.ToString());
         onBindChange.Invoke();
     }
-
+    //Todo: save editor values
     [CustomEditor(typeof(AxisBind))]
     public class LevelScriptEditor : Editor
     {
         public override void OnInspectorGUI()
         {
+            //base.OnInspectorGUI();
             AxisBind myTarget = (AxisBind)target;
             myTarget.isAxis = EditorGUILayout.Toggle("Is default an axis?", myTarget.isAxis);
             if(myTarget.isAxis)
@@ -106,6 +107,7 @@ public class AxisBind : Bind
                 myTarget.defaultNegative = (KeyCode)EditorGUILayout.EnumPopup("Negative Key", myTarget.defaultNegative);
             }
             myTarget.defaultController = (Axis)EditorGUILayout.EnumPopup("Controller Axis", myTarget.defaultController);
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
